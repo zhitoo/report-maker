@@ -40,11 +40,9 @@ app.use(express.urlencoded({ extended: true }));
 
 app.use("/tasks", taskRouter);
 
-mongoose
-  .connect("mongodb://root:password@localhost:27017/appdb?authSource=admin")
-  .then((res) => {
-    console.log("connected to db");
-    app.listen(PORT, () => {
-      console.log(`server start on http://localhost:${PORT}`);
-    });
+mongoose.connect(process.env.MONGODB_URL).then((res) => {
+  console.log("connected to db");
+  app.listen(PORT, () => {
+    console.log(`server start on http://localhost:${PORT}`);
   });
+});

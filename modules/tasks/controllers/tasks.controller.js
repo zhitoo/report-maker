@@ -8,6 +8,8 @@ async function tasks(req, res) {
   const sevenDaysAgo = new Date();
 
   const q = req.query.q?.trim();
+  const t = req.query.t?.trim();
+  const p = req.query.p?.trim();
 
   const d = req.query.d?.trim() || 7;
 
@@ -17,11 +19,20 @@ async function tasks(req, res) {
     created_at: { $gte: sevenDaysAgo, $lte: now },
   };
 
+  let filters = [];
   if (q) {
-    filter.$or = [
-      { tag: { $regex: q, $options: "i" } },
-      { project: { $regex: q, $options: "i" } },
-    ];
+    filters.push({ title: { $regex: q, $options: "i" } });
+  }
+
+  if (t) {
+    filters.push({ tag: { $regex: t, $options: "i" } });
+  }
+  if (p) {
+    filters.push({ project: { $regex: p, $options: "i" } });
+  }
+
+  if (filters.length > 0) {
+    filter.$and = filters;
   }
 
   const tasks = await Task.find(filter).sort({ created_at: -1 });
@@ -74,6 +85,8 @@ async function tasks(req, res) {
     timeByProject,
     avgScore,
     q,
+    t,
+    p,
   });
 }
 

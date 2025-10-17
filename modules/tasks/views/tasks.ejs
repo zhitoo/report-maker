@@ -39,7 +39,7 @@
       <ul class="space-y-1 text-gray-700 text-sm">
         <% for (let tag in timeByTag) { %>
         <li class="flex justify-between">
-          <a href="/tasks?q=<%=tag%>">
+          <a href="/tasks?q=<%= encodeURIComponent(tag) %>">
             <span class="font-medium text-gray-800"><%= tag %></span>
             <span
               ><%= Math.floor(timeByTag[tag] / 60) %>h <%= timeByTag[tag] % 60
@@ -56,7 +56,7 @@
       <ul class="space-y-1 text-gray-700 text-sm">
         <% for (let project in timeByProject) { %>
         <li class="flex justify-between">
-          <a href="/tasks?q=<%=project%>">
+          <a href="/tasks?q=<%= encodeURIComponent(project) %>">
             <span class="font-medium text-gray-800"><%= project %></span>
             <span
               ><%= Math.floor(timeByProject[project] / 60) %>h <%=
@@ -69,72 +69,84 @@
     </div>
 
     <div
-      class="bg-gray-50 rounded-2xl p-8 shadow-sm border flex flex-col justify-center items-center"
+      class="bg-gray-50 rounded-2xl p-5 shadow-sm border flex flex-col justify-center items-center"
     >
-      <% const roundedAvg = Math.round(avgScore); let avgEmoji = "😐";
-      if(roundedAvg <= 1) avgEmoji = "😡"; else if(roundedAvg === 2) avgEmoji =
-      "😞"; else if(roundedAvg === 3) avgEmoji = "😐"; else if(roundedAvg === 4)
-      avgEmoji = "🙂"; else if(roundedAvg >= 5) avgEmoji = "😄"; %>
-      <p class="text-5xl"><%= avgEmoji %></p>
+      <h4 class="text-sm uppercase text-gray-500 mb-2">AVG Score</h4>
+      <% const roundedAvg = Math.round(Number(avgScore) || 0); %>
+      <div class="flex justify-center text-yellow-500 text-3xl">
+        <% for (let i = 0; i < roundedAvg; i++) { %>
+        <span class="mr-0.5">⭐</span>
+        <% } %>
+      </div>
+      <p class="text-gray-600 text-sm mt-1"><%= roundedAvg %>/5</p>
     </div>
   </div>
 
   <!-- Tasks List -->
   <div class="space-y-4">
-    <% tasks.forEach(function(task){ %>
+    <% tasks.forEach(function(task){ const hours = Math.floor(Number(task.time
+    || 0) / 60); const minutes = Number(task.time || 0) % 60; const scoreCount =
+    Math.max(0, Math.floor(Number(task.score) || 0)); %>
     <div
       class="bg-white rounded-2xl p-5 shadow hover:shadow-md border transition-all duration-200"
     >
-      <div
-        class="flex flex-col md:flex-row md:items-center md:justify-between gap-3"
-      >
-        <div class="flex flex-wrap gap-3 items-center text-sm text-gray-600">
-          <div class="text-gray-800 font-semibold"><%= task.title %></div>
-          <div
-            class="bg-gray-200 px-2 py-0.5 rounded text-xs font-medium text-gray-700"
-          >
-            #<%= task.tag %>
-          </div>
-          <div class="text-gray-500">
-            <%= new
-            Date(task.created_at).toISOString().slice(0,16).replace('T',' ') %>
-          </div>
-          <% const hours = Math.floor(task.time / 60); const minutes = task.time
-          % 60; %>
-          <div class="text-gray-700 font-medium">
-            ⏱ <%= hours %>h <%= minutes %>m
-          </div>
-          <div class="text-gray-700 font-medium">📁 <%= task.project %></div>
-        </div>
+      <div class="flex justify-between items-start mb-3">
+        <div class="text-lg font-semibold text-gray-800"><%= task.title %></div>
 
-        <div class="flex gap-2 items-center">
-          <% let emoji = "😐"; if(task.score === 1) emoji = "😡"; else
-          if(task.score === 2) emoji = "😞"; else if(task.score === 3) emoji =
-          "😐"; else if(task.score === 4) emoji = "🙂"; else if(task.score ===
-          5) emoji = "😄"; %>
-          <div class="text-xl"><%= emoji %></div>
-
-          <form method="get" action="/tasks/form/<%=task._id%>">
+        <div class="flex gap-2">
+          <form method="get" action="/tasks/form/<%= task._id %>">
             <button
-              class="bg-yellow-500 hover:bg-yellow-600 transition-colors rounded-lg py-1.5 px-3 text-xs font-semibold text-white shadow-sm"
+              class="bg-blue-200 hover:bg-blue-300 text-blue-800 rounded-full p-2 text-xs font-semibold shadow-sm transition-colors"
               type="submit"
+              title="Edit Task"
             >
-              Update
+              ✏️
             </button>
           </form>
-          <form method="post" action="/tasks/remove/<%=task._id%>">
+
+          <form
+            method="post"
+            action="/tasks/remove/<%= task._id %>"
+            onsubmit="return confirm('Are you sure you want to delete this task?');"
+          >
             <button
-              class="bg-red-600 hover:bg-red-700 transition-colors rounded-lg py-1.5 px-3 text-xs font-semibold text-white shadow-sm"
+              class="bg-red-200 hover:bg-red-300 text-red-800 rounded-full p-2 text-xs font-semibold shadow-sm transition-colors"
               type="submit"
+              title="Delete Task"
             >
-              Delete
+              🗑️
             </button>
           </form>
         </div>
       </div>
 
+      <div class="flex flex-wrap items-center gap-3 text-sm text-gray-600">
+        <div
+          class="bg-gray-200 px-2 py-0.5 rounded text-xs font-medium text-gray-700"
+        >
+          #<%= task.tag %>
+        </div>
+
+        <div class="text-gray-500">
+          <%= new
+          Date(task.created_at).toISOString().slice(0,16).replace('T','') %>
+        </div>
+
+        <div class="text-gray-700 font-medium">
+          ⏱ <%= hours %>h <%= minutes %>m
+        </div>
+
+        <div class="text-gray-700 font-medium">📁 <%= task.project %></div>
+
+        <div class="flex items-center text-yellow-500 ml-2">
+          <% for (let i = 0; i < scoreCount; i++) { %>
+          <span class="mr-0.5">⭐</span>
+          <% } %>
+        </div>
+      </div>
+
       <% if (task.description) { %>
-      <p class="text-gray-600 mt-2 text-sm leading-relaxed border-t pt-2">
+      <p class="text-gray-600 mt-3 text-sm leading-relaxed border-t pt-2">
         <%- task.descriptionHtml %>
       </p>
       <% } %>

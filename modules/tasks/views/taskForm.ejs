@@ -1,0 +1,118 @@
+<%- include('partials/head.ejs') %>
+
+<div
+  class="max-w-2xl mx-auto mt-10 mb-20 bg-white rounded-2xl shadow p-8 border"
+>
+  <h1 class="text-2xl font-bold text-gray-800 mb-6 text-center">
+    <%= task ? 'Update Task' : 'Create New Task' %>
+  </h1>
+
+  <form method="post" action="<%= submitFormUrl %>" class="space-y-5">
+    <div>
+      <label class="block text-sm font-medium text-gray-600 mb-1"
+        >Project</label
+      >
+      <input
+        name="project"
+        value="<%= task?.project || '' %>"
+        placeholder="e.g. Website Redesign"
+        class="w-full border border-gray-300 rounded-lg py-2 px-3 focus:outline-none focus:ring-2 focus:ring-blue-500"
+      />
+    </div>
+
+    <div>
+      <label class="block text-sm font-medium text-gray-600 mb-1">Title</label>
+      <input
+        name="title"
+        value="<%= task?.title || '' %>"
+        placeholder="e.g. Fix login bug"
+        class="w-full border border-gray-300 rounded-lg py-2 px-3 focus:outline-none focus:ring-2 focus:ring-blue-500"
+      />
+    </div>
+
+    <div class="grid md:grid-cols-2 gap-4">
+      <div>
+        <label class="block text-sm font-medium text-gray-600 mb-1"
+          >Task Number</label
+        >
+        <input
+          name="task_number"
+          type="number"
+          value="<%= task?.task_number || '' %>"
+          placeholder="e.g. 42"
+          class="w-full border border-gray-300 rounded-lg py-2 px-3 focus:outline-none focus:ring-2 focus:ring-blue-500"
+        />
+      </div>
+
+      <div>
+        <label class="block text-sm font-medium text-gray-600 mb-1"
+          >Time (minutes)</label
+        >
+        <input
+          name="time"
+          type="number"
+          value="<%= task?.time || '' %>"
+          placeholder="e.g. 90"
+          class="w-full border border-gray-300 rounded-lg py-2 px-3 focus:outline-none focus:ring-2 focus:ring-blue-500"
+        />
+      </div>
+    </div>
+    <div class="grid md:grid-cols-2 gap-4">
+      <div>
+        <label class="block text-sm font-medium text-gray-600 mb-1">Tag</label>
+        <input
+          name="tag"
+          value="<%= task?.tag || '' %>"
+          placeholder="e.g. bug"
+          class="w-full border border-gray-300 rounded-lg py-2 px-3 focus:outline-none focus:ring-2 focus:ring-blue-500"
+        />
+      </div>
+      <div>
+        <label class="block text-sm font-medium text-gray-600 mb-1"
+          >Score</label
+        >
+        <input
+          name="score"
+          type="number"
+          min="1"
+          max="5"
+          value="<%= task?.score || '' %>"
+          placeholder="e.g. 5"
+          class="w-full border border-gray-300 rounded-lg py-2 px-3 focus:outline-none focus:ring-2 focus:ring-blue-500"
+        />
+      </div>
+    </div>
+    <div>
+      <label class="block text-sm font-medium text-gray-600 mb-1"
+        >Description</label
+      >
+      <textarea
+        id="description"
+        name="description"
+        rows="5"
+        placeholder="Add any extra details here..."
+        class="w-full border border-gray-300 rounded-lg py-2 px-3 focus:outline-none focus:ring-2 focus:ring-blue-500 resize-none"
+      >
+<%= task?.description || '' %></textarea
+      >
+    </div>
+
+    <div class="flex justify-between items-center mt-6">
+      <a
+        href="/tasks"
+        class="px-4 py-2 rounded-lg text-gray-600 hover:text-blue-600 transition-colors text-sm font-medium"
+      >
+        ← Back to Tasks
+      </a>
+
+      <button
+        type="submit"
+        class="bg-blue-600 hover:bg-blue-700 transition-colors text-white font-semibold py-2 px-6 rounded-lg shadow-sm"
+      >
+        <%= task ? 'Update Task' : 'Save Task' %>
+      </button>
+    </div>
+  </form>
+</div>
+
+<%- include('partials/foot.ejs') %>

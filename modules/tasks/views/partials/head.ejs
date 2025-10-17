@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en" class="bg-gray-50">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title><%= title %></title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- EasyMDE CSS -->
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/easymde/dist/easymde.min.css"
+    />
+  </head>
+
+  <body class="min-h-screen flex flex-col text-gray-800">
+    <!-- Header -->
+    <header class="bg-white shadow-sm border-b sticky top-0 z-50">
+      <nav
+        class="max-w-6xl mx-auto px-6 py-3 flex items-center justify-between"
+      >
+        <!-- Logo / Title -->
+        <a
+          href="/"
+          class="text-xl font-bold text-blue-600 hover:text-blue-700 transition-colors"
+        >
+          🗂 Weekly Report
+        </a>
+
+        <!-- Navigation Links -->
+        <ul class="flex gap-4">
+          <li>
+            <a
+              href="/tasks"
+              class="px-4 py-2 rounded-lg font-medium text-gray-700 hover:bg-blue-50 hover:text-blue-700 transition-colors"
+            >
+              List
+            </a>
+          </li>
+          <li>
+            <a
+              href="/tasks/form"
+              class="px-4 py-2 rounded-lg font-medium text-white bg-blue-600 hover:bg-blue-700 shadow-sm transition-colors"
+            >
+              + New
+            </a>
+          </li>
+        </ul>
+      </nav>
+    </header>
+  </body>
+</html>

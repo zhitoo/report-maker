@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Report Maker</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+  </head>
+  <body class="bg-gray-100 h-screen flex items-center justify-center">
+    <div class="text-center space-y-6">
+      <!-- Title with soft fade-in -->
+      <h1
+        class="text-5xl md:text-6xl font-extrabold text-gray-800 mb-2 opacity-0 animate-fadeIn"
+      >
+        Report Maker
+      </h1>
+
+      <!-- Button with gentle hover scale -->
+      <a
+        href="/tasks"
+        class="inline-block bg-blue-600 text-white font-semibold py-3 px-8 rounded-xl shadow-lg transition transform duration-300 hover:-translate-y-0.5 hover:scale-105 hover:bg-blue-700"
+      >
+        Let's GO
+      </a>
+
+      <p
+        class="text-gray-500 text-sm md:text-base opacity-0 animate-fadeIn delay-200"
+      >
+        Create and manage your report efficiently
+      </p>
+
+      <!-- Week Card with smooth scale -->
+      <div
+        id="weekCard"
+        class="mt-6 inline-block bg-white p-6 rounded-2xl shadow-xl border border-gray-200 transition transform duration-500 ease-in-out hover:-translate-y-0.5 hover:scale-105"
+      >
+        <h2 class="text-gray-500 uppercase text-sm mb-1">Current Week</h2>
+        <p class="text-3xl font-bold text-blue-600" id="weekNumber">--</p>
+      </div>
+    </div>
+
+    <!-- Background subtle gradient -->
+    <div
+      class="fixed inset-0 bg-gradient-to-tr from-blue-100 via-white to-blue-50 -z-10"
+    ></div>
+
+    <script>
+      function getWeekNumber(d) {
+        d = new Date(Date.UTC(d.getFullYear(), d.getMonth(), d.getDate()));
+        const dayNum = d.getUTCDay() || 7;
+        d.setUTCDate(d.getUTCDate() + 4 - dayNum);
+        const yearStart = new Date(Date.UTC(d.getUTCFullYear(), 0, 1));
+        return Math.ceil(((d - yearStart) / 86400000 + 1) / 7);
+      }
+
+      const now = new Date();
+      document.getElementById("weekNumber").textContent = getWeekNumber(now);
+    </script>
+
+    <style>
+      @keyframes fadeIn {
+        0% {
+          opacity: 0;
+          transform: translateY(10px);
+        }
+        100% {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+      .animate-fadeIn {
+        animation: fadeIn 1s forwards;
+      }
+      .delay-200 {
+        animation-delay: 0.2s;
+      }
+    </style>
+  </body>
+</html>

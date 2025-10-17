@@ -65,7 +65,7 @@ async function tasks(req, res) {
       task.descriptionHtml = marked.parse(task.description);
     }
   });
-
+  console.log(q);
   res.render(path.join("..", "views", "tasks"), {
     title: "Report",
     tasks: tasks,
@@ -73,6 +73,7 @@ async function tasks(req, res) {
     timeByTag,
     timeByProject,
     avgScore,
+    q,
   });
 }
 

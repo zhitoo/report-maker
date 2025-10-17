@@ -12,7 +12,7 @@
       <input
         type="text"
         name="q"
-        value="<%= typeof q !== 'undefined' ? q : '' %>"
+        value="<%= q %>"
         placeholder="Search by tag or project..."
         class="border border-gray-300 rounded-l-lg py-2 px-4 w-full focus:outline-none focus:ring-2 focus:ring-blue-500"
       />
@@ -39,11 +39,13 @@
       <ul class="space-y-1 text-gray-700 text-sm">
         <% for (let tag in timeByTag) { %>
         <li class="flex justify-between">
-          <span class="font-medium text-gray-800"><%= tag %></span>
-          <span
-            ><%= Math.floor(timeByTag[tag] / 60) %>h <%= timeByTag[tag] % 60
-            %>m</span
-          >
+          <a href="/tasks?q=<%=tag%>">
+            <span class="font-medium text-gray-800"><%= tag %></span>
+            <span
+              ><%= Math.floor(timeByTag[tag] / 60) %>h <%= timeByTag[tag] % 60
+              %>m</span
+            >
+          </a>
         </li>
         <% } %>
       </ul>
@@ -54,11 +56,13 @@
       <ul class="space-y-1 text-gray-700 text-sm">
         <% for (let project in timeByProject) { %>
         <li class="flex justify-between">
-          <span class="font-medium text-gray-800"><%= project %></span>
-          <span
-            ><%= Math.floor(timeByProject[project] / 60) %>h <%=
-            timeByProject[project] % 60 %>m</span
-          >
+          <a href="/tasks?q=<%=project%>">
+            <span class="font-medium text-gray-800"><%= project %></span>
+            <span
+              ><%= Math.floor(timeByProject[project] / 60) %>h <%=
+              timeByProject[project] % 60 %>m</span
+            >
+          </a>
         </li>
         <% } %>
       </ul>
